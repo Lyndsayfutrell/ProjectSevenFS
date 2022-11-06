@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import axios from 'axios';
+import Nav from "./components/Nav";
+import SearchForm from "./components/SearchForm";
+import PhotoContainer from "./components/PhotoContainer";
+import apiKey from './config'; 
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      images: [],
+      loading: true
+    };
+  } 
+  componentDidMount() {
+    this.performSearch();
+  }
+
+    performSearch = (query = 'cats') => {
+      const key = apiKey;
+      axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&text=${query}&per_page=25&page=1&format=json&nojsoncallback=1`)
+        .then(response => {
+          this.setState({
+            gifs: response.data.data,
+            loading: false
+          });
+        })
+        .catch(error => {
+          console.log('Error fetching and parsing data', error);
+        });
+    }
+  
+    render() {
+      return (
+        <div>
+          <SearchForm />
+          <Nav />
+          <PhotoContainer />
+        </div>
+      );
+  }
 }
-
-export default App;
