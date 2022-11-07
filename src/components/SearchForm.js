@@ -1,27 +1,41 @@
-import React, { Component } from "react";
+import React, { useRef, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default class SearchForm extends Component {
 
-  state = {
-    searchText: "",
+const SearchForm = (props) => {
+
+  const url = window.location.pathname.split('/').pop();
+
+  useEffect(() => {
+    if(search != searchText) {
+      searchText = search;
+      props.onSearch(searchText)
+    }
+  }, [url])
+
+
+  let { search } = useParams();
+
+  let searchText = useRef("");
+  const navigate = useNavigate();
+
+  const onSearchChange = (e) => {
+    searchText = e.target.value;
+
   };
 
-  onSearchChange = (e) => {
-    this.setState({ searchText: e.target.value });
-  };
-
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.props.onSearch(this.query.value);
+    props.onSearch(searchText);
+    navigate(`/${searchText}`);
     e.currentTarget.reset();
   };
 
-  render() {
     return (
-      <form className="search-form" onSubmit={this.handleSubmit}>
+      <form className="search-form" onSubmit={handleSubmit}>
         <input
-          onChange={this.onSearchChange}
-          ref={(input) => this.query = input}
+          onChange={onSearchChange}
+          ref={(input) => searchText = input}
           type="search"
           name="search"
           placeholder="Search"
@@ -42,4 +56,5 @@ export default class SearchForm extends Component {
       </form>
     );
   }
-}
+
+  export default SearchForm;

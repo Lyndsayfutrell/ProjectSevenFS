@@ -12,17 +12,17 @@ const PhotoContainer = props => {
             <Photo 
               server={image.server} secret={image.secret} key={image.id} id={image.id} title={image.title}/>
             );
-    } else {
-        images = <NoResults />
-    }
+        }
   return (
     <div className="photo-container">
       <h2>Results</h2>
-        <ul>
-          {images}
-        </ul>
-    </div>
-  );
+      {(results.length > 0)
+      ? <ul>{images}</ul>
+      : <NoResults />
+      }   
+    </div>   
+  );     
 }
+
 
 export default PhotoContainer;

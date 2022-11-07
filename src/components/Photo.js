@@ -10,7 +10,6 @@ function Photo(props) {
         />
       </li>
   );
-  console.log(props.server);
 
 }
 
