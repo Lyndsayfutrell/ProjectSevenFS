@@ -7,7 +7,7 @@ const SearchForm = (props) => {
   const url = window.location.pathname.split('/').pop();
 
   useEffect(() => {
-    if(search != searchText) {
+    if(search !== searchText) {
       searchText = search;
       props.onSearch(searchText)
     }
@@ -21,11 +21,11 @@ const SearchForm = (props) => {
 
   const onSearchChange = (e) => {
     searchText = e.target.value;
-
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    props.loadingStatus();
     props.onSearch(searchText);
     navigate(`/${searchText}`);
     e.currentTarget.reset();
